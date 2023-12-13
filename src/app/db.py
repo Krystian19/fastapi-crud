@@ -2,7 +2,10 @@ from sqlalchemy import (Column, Integer, String, Table, create_engine, MetaData)
 from datetime import datetime as dt
 from databases import Database
 
-engine = create_engine('sqlite:///example.db', echo=True)
+DATABASE_URL = 'sqlite:///example.db'
+
+engine = create_engine(DATABASE_URL, echo=True)
+database = Database(DATABASE_URL)
 metadata = MetaData()
 
 users = Table(
@@ -14,4 +17,4 @@ users = Table(
     Column("created_at", String(50), default=dt.now().strftime("%Y-%m-%d %H:%M"))
 )
 
-database = Database()
+metadata.create_all(engine)

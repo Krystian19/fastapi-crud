@@ -1,24 +1,26 @@
 from fastapi import FastAPI
+from starlette.middleware.cors import CORSMiddleware
+
+from app import users
+from app.db import database
 
 app = FastAPI()
+origins = ["*"]
 
-@app.get("/")
-def read_root():
-    return "API service is running" 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["DELETE", "GET", "POST", "PUT"],
+    allow_headers=["*"],
+)
 
-@app.get("/v1/users")
-def get_users():
-    return [{"here": "we are"}]
+@app.on_event("startup")
+async def startup():
+    await database.connect()
 
-@app.get("/v1/users/{user_id}")
-def get_user(user_id: int):
-    return {"msg": "this is the user"} 
+@app.on_event("shutdown")
+async def shutdown():
+    await database.disconnect()
 
-@app.post("/v1/users")
-def create_user():
-    return False 
-
-@app.delete("/v1/users/{user_id}")
-def destroy_user(user_id: int):
-    return True
-
+app.include_router(users.router)
