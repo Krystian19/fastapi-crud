@@ -18,9 +18,8 @@ async def get_user(user_id: int = Path(..., gt=0)):
 @router.post("/v1/users", response_model=UserDB, status_code=201)
 async def create_user(payload: UserSchema):
     created_user_id = await crud.create_user(payload=payload)
-    found_created_user = await crud.get_user(created_user_id)
 
-    return found_created_user
+    return await crud.get_user(created_user_id)
 
 @router.delete("/v1/users/{user_id}", response_model=Optional[UserDB])
 async def destroy_user(user_id: int = Path(...,gt=0)):

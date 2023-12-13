@@ -23,4 +23,8 @@ async def startup():
 async def shutdown():
     await database.disconnect()
 
+@app.get("/")
+def read_root():
+    return "web server is running" 
+
 app.include_router(users.router)
