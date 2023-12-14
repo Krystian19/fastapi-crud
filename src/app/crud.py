@@ -14,6 +14,10 @@ async def create_user(payload: UserSchema):
     query = users.insert().values(email=payload.email, username=payload.username, created_at=dt.now().strftime("%Y-%m-%d %H:%M"))
     return await database.execute(query=query)
 
+async def update_user(id: int, payload: UserSchema):
+    query = users.update().where(id == users.c.id).values(email=payload.email, username=payload.username)
+    return await database.execute(query=query)
+
 async def destroy_user(id: int):
     query = users.delete().where(id == users.c.id)
     return await database.execute(query=query)

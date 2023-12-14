@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Path
-from typing import List, Optional
+from typing import List, Optional 
 from datetime import datetime as dt
 
-from app.models import UserDB, UserSchema
+from app.models import UserDB, UserSchema, UserFieldsSchema
 from app import crud
 
 router = APIRouter()
@@ -20,6 +20,16 @@ async def create_user(payload: UserSchema):
     created_user_id = await crud.create_user(payload=payload)
 
     return await crud.get_user(created_user_id)
+
+@router.put("/v1/users/{user_id}", response_model=Optional[UserDB], status_code=202)
+async def update_user(user_id:int, payload: UserFieldsSchema):
+        found_user = await crud.get_user(id=user_id)
+
+        if not found_user:
+            return None
+
+        await crud.update_user(found_user.id, payload=payload)
+        return await crud.get_user(found_user.id)
 
 @router.delete("/v1/users/{user_id}", response_model=Optional[UserDB])
 async def destroy_user(user_id: int = Path(...,gt=0)):

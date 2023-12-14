@@ -54,6 +54,42 @@ GET /v1/users/{user_id}
 ```
 
 ```sh
+# creates a user
+POST /v1/users
+
+# payload sample
+{
+    "email": "john.doe@gmail.com",
+    "username": "john.doe",
+}
+
+# response sample
+{
+    "email": "john.doe@gmail.com",
+    "username": "john.doe",
+    "created_at": "Y-M-D H:M"
+}
+```
+
+```sh
+# updates a user
+PUT /v1/users/{user_id}
+
+# payload sample (all fields need to be specified, even the ones not being updated)
+{
+    "email": "john.doe@gmail.com",
+    "username": "john.doe",
+}
+
+# response sample
+{
+    "email": "john.doe@gmail.com",
+    "username": "john.doe",
+    "created_at": "Y-M-D H:M"
+} # returns null in case the provided user id does not exist
+```
+
+```sh
 # deletes a user with id
 DELETE /v1/users/{user_id}
 
