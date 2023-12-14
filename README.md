@@ -23,6 +23,13 @@ python3 ./src/main.py
 
 And voilà, your web server should be running @ http://localhost:3000
 
+### How to run tests
+
+```sh
+# while in the project root directory
+pytest .
+```
+
 ### Notes:
 
 These are the existing endpoints:
